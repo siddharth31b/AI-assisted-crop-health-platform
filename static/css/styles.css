@@ -558,6 +558,7 @@ textarea {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    gap: 24px;
 }
 
 .auth-art {
@@ -633,14 +634,6 @@ textarea {
 .mini-card strong {
     display: block;
     margin-bottom: 6px;
-}
-
-.contributors {
-    margin-top: 22px;
-    padding-top: 18px;
-    border-top: 1px solid rgba(28, 68, 44, 0.12);
-    color: var(--muted);
-    font-size: 0.96rem;
 }
 
 .upload-shell,

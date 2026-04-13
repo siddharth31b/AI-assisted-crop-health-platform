@@ -175,9 +175,3 @@ AI-assisted crop health platform/
 - Add proper model-training pipeline inside the app
 - Improve dataset validation and upload reporting
 - Add prediction history and report export
-
-## Contributors
-
-- Siddharth Belgahe
-- Prachi Manikpuri
-- Priyanshee Jha
