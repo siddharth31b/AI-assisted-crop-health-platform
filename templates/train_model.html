@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="shell-grid">
+    <section class="hero-panel">
+        <div class="hero-grid">
+            <div class="hero-copy">
+                <span class="eyebrow">Admin Training Setup</span>
+                <h2>Prepare structured image datasets for new crop classes.</h2>
+                <p>
+                    Define the crop name, generate class upload sections, and organize multiple disease
+                    folders in a way that is much easier to manage from the UI.
+                </p>
+            </div>
+            <div class="panel">
+                <span class="status-pill">Upload Rule</span>
+                <h3>Minimum 5 images per class</h3>
+                <p>Each class needs at least five images before the form can be submitted successfully.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="train-layout">
+        <form class="form-shell" action="{{ url_for('train_model') }}" method="POST" enctype="multipart/form-data" onsubmit="return validateForm();">
+            <div class="field">
+                <label for="crop_name">Crop Name</label>
+                <input type="text" name="crop_name" id="crop_name" placeholder="Example: tomato" required>
+            </div>
+
+            <div class="field">
+                <label for="num_classes">Number of Classes</label>
+                <input type="number" min="1" name="num_classes" id="num_classes" placeholder="Example: 3" required>
+                <span class="label-hint">Enter the number of disease or health classes you want to create.</span>
+            </div>
+
+            <div class="button-row">
+                <button type="button" class="button-secondary" onclick="generateClassFields()">Generate Class Fields</button>
+                <button type="submit" class="button-primary">Submit Dataset</button>
+            </div>
+
+            <div id="classes" class="generated-classes"></div>
+        </form>
+
+        <div>
+            <div class="side-note">
+                <span class="eyebrow">Workflow</span>
+                <h3>Recommended dataset checklist</h3>
+                <ul class="tip-list">
+                    <li>Keep class names clear and consistent with actual disease labels.</li>
+                    <li>Use sharp images with good lighting and visible leaf texture.</li>
+                    <li>Avoid mixing different diseases inside the same class folder.</li>
+                    <li>Capture multiple angles and leaf conditions for better coverage.</li>
+                </ul>
+            </div>
+
+            <div class="side-note">
+                <span class="eyebrow">Tip</span>
+                <h3>Before submission</h3>
+                <p>Generate the class cards first, then upload at least five images in every section.</p>
+            </div>
+        </div>
+    </section>
+</section>
+
+<div id="loading-overlay" class="loading-overlay">
+    <div class="spinner"></div>
+    <p>Uploading and organizing your dataset. Please wait...</p>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function showLoading() {
+        document.getElementById("loading-overlay").style.display = "flex";
+    }
+
+    function generateClassFields() {
+        const classesDiv = document.getElementById("classes");
+        classesDiv.innerHTML = "";
+
+        const numClasses = parseInt(document.getElementById("num_classes").value, 10);
+        if (Number.isNaN(numClasses) || numClasses <= 0) {
+            showToast("Please enter a valid number of classes.", "error");
+            return;
+        }
+
+        for (let i = 1; i <= numClasses; i += 1) {
+            const classDiv = document.createElement("div");
+            classDiv.className = "class-card";
+            classDiv.innerHTML = `
+                <h4>Class ${i}</h4>
+                <div class="field">
+                    <label for="class_name_${i}">Class Name</label>
+                    <input type="text" name="class_name_${i}" id="class_name_${i}" placeholder="Example: healthy" required>
+                </div>
+                <div class="field">
+                    <label for="class_images_${i}">Upload Images</label>
+                    <input type="file" name="class_images_${i}" id="class_images_${i}" multiple accept="image/*" required>
+                    <span class="label-hint">Upload at least 5 images for this class.</span>
+                </div>
+            `;
+            classesDiv.appendChild(classDiv);
+        }
+    }
+
+    function validateForm() {
+        const numClasses = parseInt(document.getElementById("num_classes").value, 10);
+        if (Number.isNaN(numClasses) || numClasses <= 0) {
+            showToast("Please generate at least one class before submitting.", "error");
+            return false;
+        }
+
+        for (let i = 1; i <= numClasses; i += 1) {
+            const fileInput = document.getElementById(`class_images_${i}`);
+            if (!fileInput || fileInput.files.length < 5) {
+                showToast(`Please upload at least 5 images for Class ${i}.`, "error");
+                return false;
+            }
+        }
+
+        showLoading();
+        return true;
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="error-shell">
+    <div class="panel">
+        <span class="eyebrow">Something went wrong</span>
+        <h2 class="section-title">Error: {{ error_message }}</h2>
+        <p class="section-subtitle">
+            The page could not be loaded. You can return to the previous screen or jump back to the dashboard.
+        </p>
+        <div class="button-row">
+            <button type="button" class="button-secondary" onclick="window.history.back()">Go Back</button>
+            {% if session.get('role') == 'admin' %}
+                <a href="{{ url_for('admin_dashboard') }}" class="button-primary">Admin Dashboard</a>
+            {% elif session.get('role') == 'user' %}
+                <a href="{{ url_for('user_dashboard') }}" class="button-primary">User Dashboard</a>
+            {% else %}
+                <a href="{{ url_for('login') }}" class="button-primary">Return to Login</a>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

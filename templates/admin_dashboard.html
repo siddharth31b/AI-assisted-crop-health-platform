@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block content %}
+<input type="file" id="hidden-file-upload" accept="image/*" hidden>
+
+<section class="shell-grid">
+    <section class="hero-panel">
+        <div class="hero-grid">
+            <div class="hero-copy">
+                <span class="eyebrow">Admin Dashboard</span>
+                <h2>Operate the diagnosis system and grow the dataset from one control panel.</h2>
+                <p>
+                    Select a crop for live testing, review prediction flow, and open the training page
+                    to organize new classes and images for future models.
+                </p>
+                <div class="hero-actions">
+                    <button class="button-primary" type="button" data-dashboard-upload data-upload-trigger="true" data-loading-label="Uploading..." data-requires-crop="true">Test Upload Flow</button>
+                    <button class="button-secondary" type="button" data-dashboard-capture data-capture-trigger="true" data-requires-crop="true">Capture Sample</button>
+                    <button class="button-soft" type="button" data-open-support-chat>Open 24/7 Support</button>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">
+                    <div>
+                        <span class="status-pill">Admin View</span>
+                        <h3 data-selected-crop-label>
+                            {{ session.get('selected_crop', 'Choose a crop')|capitalize if session.get('selected_crop') else 'Choose a crop' }}
+                        </h3>
+                        <p>Current crop selection will be used for upload and camera-based tests.</p>
+                    </div>
+                </div>
+                <div class="stats-grid">
+                    <div class="metric-card">
+                        <strong>2</strong>
+                        <p>Production-ready crop categories</p>
+                    </div>
+                    <div class="metric-card">
+                        <strong>Train</strong>
+                        <p>Create structured folders for new crop classes</p>
+                    </div>
+                    <div class="metric-card">
+                        <strong>Assist</strong>
+                        <p>Open chatbot support for quick agronomy prompts</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="panel">
+        <div class="panel-header">
+            <div>
+                <span class="eyebrow">Crop Library</span>
+                <h3 class="section-title">Choose a crop for admin testing</h3>
+                <p>Switch the active model context before upload or camera capture.</p>
+            </div>
+        </div>
+
+        <div class="card-grid">
+            <label class="crop-card {% if session.get('selected_crop') == 'sugarcane' %}selected{% endif %}" data-crop-card="sugarcane" style="background-image: url('{{ url_for('static', filename='images/sugarcane.png') }}');">
+                <input type="radio" name="crop" value="sugarcane" {% if session.get('selected_crop') == 'sugarcane' %}checked{% endif %}>
+                <div class="crop-content">
+                    <div class="crop-topline">
+                        <span class="crop-tag">Sugarcane</span>
+                        <span class="selected-indicator" aria-hidden="true"></span>
+                    </div>
+                    <h3>Sugarcane</h3>
+                    <p>Best for rust, yellow leaf, smut, and multi-class sugarcane testing.</p>
+                </div>
+            </label>
+
+            <label class="crop-card {% if session.get('selected_crop') == 'grapes' %}selected{% endif %}" data-crop-card="grapes" style="background-image: url('{{ url_for('static', filename='images/grapes.png') }}');">
+                <input type="radio" name="crop" value="grapes" {% if session.get('selected_crop') == 'grapes' %}checked{% endif %}>
+                <div class="crop-content">
+                    <div class="crop-topline">
+                        <span class="crop-tag">Grapes</span>
+                        <span class="selected-indicator" aria-hidden="true"></span>
+                    </div>
+                    <h3>Grapes</h3>
+                    <p>Use for leaf blight, black rot, and esca prediction checks.</p>
+                </div>
+            </label>
+        </div>
+    </section>
+
+    <section class="feature-grid">
+        <article class="feature-card">
+            <span class="eyebrow">Dataset Ops</span>
+            <h3>Prepare class folders</h3>
+            <p>Generate upload slots for each disease class directly from the training page.</p>
+        </article>
+        <article class="feature-card">
+            <span class="eyebrow">Quality Check</span>
+            <h3>Validate inference flow</h3>
+            <p>Run quick test uploads before presenting or extending the project.</p>
+        </article>
+        <article class="feature-card">
+            <span class="eyebrow">Support</span>
+            <h3>Use the chatbot</h3>
+            <p>Ask symptom or treatment-related questions without leaving the app experience.</p>
+        </article>
+    </section>
+</section>
+{% endblock %}

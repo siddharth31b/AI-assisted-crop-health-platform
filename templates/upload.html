@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="shell-grid">
+    <section class="hero-panel">
+        <div class="hero-grid">
+            <div class="hero-copy">
+                <span class="eyebrow">Image Analysis</span>
+                <h2>Upload a leaf image and review the prediction clearly.</h2>
+                <p>
+                    This screen highlights the selected crop, uploaded image, and disease output
+                    so the diagnosis is easier to read during demos and practical use.
+                </p>
+                <div class="hero-actions">
+                    <a href="{{ redirect_url }}" class="button-secondary">Back to Dashboard</a>
+                    <a href="{{ url_for('upload_page', reset=1) }}" class="button-soft">Upload Another Image</a>
+                </div>
+            </div>
+            <div class="panel">
+                <span class="status-pill">Selected Crop</span>
+                <h3>{{ session.get('selected_crop', 'Not selected')|capitalize }}</h3>
+                <p>
+                    {% if session.get('selected_crop') %}
+                        The current session will use the {{ session.get('selected_crop') }} model for prediction.
+                    {% else %}
+                        Choose a crop from the dashboard before uploading an image.
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </section>
+
+    {% if image_path %}
+        <section class="result-shell">
+            <div class="result-grid">
+                <div class="image-frame">
+                    <img src="{{ url_for('static', filename='uploads/' + image_path) }}" alt="Uploaded crop image">
+                </div>
+
+                <div class="result-stack">
+                    <div class="result-card">
+                        <span class="prediction-banner">Prediction Ready</span>
+                        <h3>Diagnosis Summary</h3>
+                        <p><strong>Crop Class</strong></p>
+                        <p>{{ class_name }}</p>
+                        <p><strong>Disease Result</strong></p>
+                        <p>{{ disease }}</p>
+                    </div>
+
+                    <div class="result-card">
+                        <h3>What to do next</h3>
+                        <ul class="help-list">
+                            <li>Try another image if the leaf is blurred, far away, or poorly lit.</li>
+                            <li>Use the chatbot if you want symptom-based advice or basic prevention tips.</li>
+                            <li>Return to the dashboard to switch crops and run another test.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    {% else %}
+        <section class="upload-shell">
+            <div class="upload-dropzone">
+                <span class="eyebrow">Manual Upload</span>
+                <h3 class="section-title">Select an image from your device</h3>
+                <p class="section-subtitle">PNG, JPG, or JPEG images work best for the model.</p>
+                <form method="POST" enctype="multipart/form-data" class="upload-form">
+                    <div class="field">
+                        <label for="file">Leaf image</label>
+                        <input type="file" name="file" id="file" accept=".png,.jpg,.jpeg,image/png,image/jpeg" required>
+                        <p class="label-hint">Upload one clear leaf image. The selected crop above will be used automatically.</p>
+                    </div>
+                    <div class="button-row">
+                        <button type="submit" class="button-primary">Upload and Analyze</button>
+                        <a href="{{ redirect_url }}" class="button-secondary">Back to Dashboard</a>
+                    </div>
+                </form>
+            </div>
+
+            {% if error %}
+                <div class="alert alert-error">{{ error }}</div>
+            {% else %}
+                <div class="empty-state">
+                    <h3>No image analyzed yet</h3>
+                    <p>Upload a leaf image to view crop class and disease prediction here.</p>
+                </div>
+            {% endif %}
+        </section>
+    {% endif %}
+
+    {% if error and image_path %}
+        <div class="alert alert-error">{{ error }}</div>
+    {% endif %}
+</section>
+{% endblock %}

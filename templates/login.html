@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="auth-grid">
+    <div class="auth-copy glass-panel">
+        <div>
+            <span class="eyebrow">Smart Plant Care</span>
+            <h2>Modern crop diagnosis for farmers, researchers, and project demos.</h2>
+            <p>
+                Crop Doctor helps users detect diseases from leaf images, switch between supported crops,
+                and get quick guidance through an integrated assistant.
+            </p>
+            <div class="small-stats">
+                <div class="mini-card">
+                    <strong>2 Crops</strong>
+                    <span>Sugarcane and grapes are ready for analysis.</span>
+                </div>
+                <div class="mini-card">
+                    <strong>3 Modes</strong>
+                    <span>Upload, live camera capture, and assistant support.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="auth-art"></div>
+
+        <div class="contributors">
+            <strong>Contributors</strong><br>
+            Siddharth Belgahe, Prachi Manikpuri, Priyanshee Jha
+        </div>
+    </div>
+
+    <div class="auth-card">
+        <span class="eyebrow">Project Access</span>
+        <h3>Welcome back</h3>
+        <p class="muted">Sign in to open the dashboard and continue disease detection.</p>
+
+        <form method="POST">
+            <div class="field">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="Enter username" required>
+            </div>
+            <div class="field">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter password" required>
+            </div>
+            <button type="submit" class="button-primary" style="width: 100%;">Login to Dashboard</button>
+        </form>
+
+        <div class="credential-grid">
+            <div class="mini-card">
+                <strong>User Demo</strong>
+                <span>user / user</span>
+            </div>
+            <div class="mini-card">
+                <strong>Admin Demo</strong>
+                <span>admin / admin</span>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block content %}
+<input type="file" id="hidden-file-upload" accept="image/*" hidden>
+
+<section class="shell-grid">
+    <section class="hero-panel">
+        <div class="hero-grid">
+            <div class="hero-copy">
+                <span class="eyebrow">User Dashboard</span>
+                <h2>Detect crop disease with a cleaner, faster workflow.</h2>
+                <p>
+                    Choose a crop, upload or capture a leaf image, and review the diagnosis instantly.
+                    The interface is optimized for both phone and desktop use.
+                </p>
+                <div class="hero-actions">
+                    <button class="button-primary" type="button" data-dashboard-upload data-upload-trigger="true" data-loading-label="Uploading..." data-requires-crop="true">Upload Leaf Image</button>
+                    <button class="button-secondary" type="button" data-dashboard-capture data-capture-trigger="true" data-requires-crop="true">Open Camera</button>
+                    <button class="button-soft" type="button" data-open-support-chat>Open 24/7 Support</button>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">
+                    <div>
+                        <span class="status-pill">Current Selection</span>
+                        <h3 data-selected-crop-label>
+                            {{ session.get('selected_crop', 'Choose a crop')|capitalize if session.get('selected_crop') else 'Choose a crop' }}
+                        </h3>
+                        <p>Select one crop below before uploading or using the camera.</p>
+                    </div>
+                </div>
+                <div class="stats-grid">
+                    <div class="metric-card">
+                        <strong>2</strong>
+                        <p>Supported crops ready for inference</p>
+                    </div>
+                    <div class="metric-card">
+                        <strong>AI</strong>
+                        <p>Prediction plus assistant support in one flow</p>
+                    </div>
+                    <div class="metric-card">
+                        <strong>Live</strong>
+                        <p>Use mobile camera directly from the dashboard</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="panel">
+        <div class="panel-header">
+            <div>
+                <span class="eyebrow">Step 1</span>
+                <h3 class="section-title">Choose your crop</h3>
+                <p>Selection is saved in the current session and used during prediction.</p>
+            </div>
+        </div>
+        <div class="card-grid">
+            <label class="crop-card {% if session.get('selected_crop') == 'sugarcane' %}selected{% endif %}" data-crop-card="sugarcane" style="background-image: url('{{ url_for('static', filename='images/sugarcane.png') }}');">
+                <input type="radio" name="crop" value="sugarcane" {% if session.get('selected_crop') == 'sugarcane' %}checked{% endif %}>
+                <div class="crop-content">
+                    <div class="crop-topline">
+                        <span class="crop-tag">Sugarcane</span>
+                        <span class="selected-indicator" aria-hidden="true"></span>
+                    </div>
+                    <h3>Sugarcane</h3>
+                    <p>Detect issues like yellow leaf, rust, smut, grassy shoot, and more.</p>
+                </div>
+            </label>
+
+            <label class="crop-card {% if session.get('selected_crop') == 'grapes' %}selected{% endif %}" data-crop-card="grapes" style="background-image: url('{{ url_for('static', filename='images/grapes.png') }}');">
+                <input type="radio" name="crop" value="grapes" {% if session.get('selected_crop') == 'grapes' %}checked{% endif %}>
+                <div class="crop-content">
+                    <div class="crop-topline">
+                        <span class="crop-tag">Grapes</span>
+                        <span class="selected-indicator" aria-hidden="true"></span>
+                    </div>
+                    <h3>Grapes</h3>
+                    <p>Check for black rot, esca, leaf blight, and healthy leaf predictions.</p>
+                </div>
+            </label>
+        </div>
+    </section>
+
+    <section class="feature-grid">
+        <article class="feature-card">
+            <span class="eyebrow">Step 2</span>
+            <h3>Upload a clean photo</h3>
+            <p>Best results come from bright, close-up leaf images with minimal background noise.</p>
+        </article>
+        <article class="feature-card">
+            <span class="eyebrow">Step 3</span>
+            <h3>Review the diagnosis</h3>
+            <p>The upload screen shows crop class, predicted disease, and confidence in one place.</p>
+        </article>
+        <article class="feature-card">
+            <span class="eyebrow">Step 4</span>
+            <h3>Ask for guidance</h3>
+            <p>Use the assistant to ask about symptoms, irrigation, fertilizer, or prevention.</p>
+        </article>
+    </section>
+</section>
+{% endblock %}

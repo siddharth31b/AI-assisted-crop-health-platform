@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title or "Crop Doctor" }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    {% block head_extra %}{% endblock %}
+</head>
+<body class="{{ body_class or '' }}" data-page="{{ request.endpoint or '' }}">
+    {% if session.get('role') %}
+        {% set dashboard_url = url_for('admin_dashboard') if session.get('role') == 'admin' else url_for('user_dashboard') %}
+        <header class="topbar">
+            <div class="brand-wrap">
+                <div class="brand-mark">CD</div>
+                <div class="brand-copy">
+                    <h1>Crop Doctor</h1>
+                    <p>AI-assisted crop health platform</p>
+                </div>
+            </div>
+            <nav class="topbar-nav">
+                <span class="role-pill">{{ session.get('role', 'guest')|capitalize }} Mode</span>
+                <a class="nav-link {% if request.endpoint in ['user_dashboard', 'admin_dashboard'] %}active{% endif %}" href="{{ dashboard_url }}">Dashboard</a>
+                <a class="nav-link {% if request.endpoint == 'chatbot_page' %}active{% endif %}" href="{{ url_for('chatbot_page') }}">Assistant</a>
+                {% if session.get('role') == 'admin' %}
+                    <a class="nav-link {% if request.endpoint == 'train_model' %}active{% endif %}" href="{{ url_for('train_model') }}">Train Model</a>
+                {% endif %}
+                <a class="button-soft" href="{{ url_for('logout') }}">Logout</a>
+            </nav>
+        </header>
+    {% endif %}
+
+    <main class="page-wrapper {% if session.get('role') %}with-topbar{% endif %}">
+        <div class="alert-stack" data-alert-host>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ 'error' if category == 'error' else 'success' if category == 'success' else 'info' }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+        {% block content %}{% endblock %}
+    </main>
+
+    {% if session.get('role') %}
+        <aside class="support-widget" data-support-widget>
+            <button type="button" class="support-launcher" data-support-toggle aria-expanded="false" aria-controls="support-panel">
+                <span class="support-launcher-badge">24/7</span>
+                <span class="support-launcher-copy">
+                    <strong>Open Support</strong>
+                    <small>AI help anytime</small>
+                </span>
+            </button>
+
+            <div class="support-backdrop" data-support-backdrop hidden></div>
+
+            <section class="support-panel" id="support-panel" hidden>
+                <div class="support-panel-header">
+                    <div>
+                        <span class="status-pill">Live Customer Support</span>
+                        <h3>Crop Doctor Support AI</h3>
+                        <p>Instant app help and crop guidance, available 24/7.</p>
+                    </div>
+                    <button type="button" class="support-icon-button" data-support-close aria-label="Close support panel">&times;</button>
+                </div>
+
+                <div class="support-meta-row">
+                    <span class="crop-pill">Role: {{ session.get('role', 'guest')|capitalize }}</span>
+                    <span class="crop-pill">Crop: {{ session.get('selected_crop', 'Not selected')|capitalize }}</span>
+                </div>
+
+                <div class="support-quick-prompts">
+                    <button type="button" class="suggestion-chip" data-support-prompt="Upload not working">Upload issue</button>
+                    <button type="button" class="suggestion-chip" data-support-prompt="How do I capture a clear leaf image?">Camera help</button>
+                    <button type="button" class="suggestion-chip" data-support-prompt="What does confidence score mean?">Prediction help</button>
+                </div>
+
+                <div class="support-chat-window" data-support-messages>
+                    <div class="chat-message bot">Hello! I am Crop Doctor Support AI. I am available 24/7 for upload help, diagnosis support, and crop-care guidance.</div>
+                </div>
+
+                <div class="support-input-row">
+                    <input type="text" data-support-input placeholder="Ask about upload, camera, prediction, or crop care...">
+                    <button type="button" class="button-primary" data-support-send>Send</button>
+                </div>
+
+                <div class="support-footer-actions">
+                    <button type="button" class="chip-link" data-support-clear>Clear chat</button>
+                    <a class="chip-link" href="{{ url_for('chatbot_page') }}">Open support center</a>
+                </div>
+            </section>
+        </aside>
+    {% endif %}
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="shell-grid">
+    <section class="hero-panel">
+        <div class="hero-grid">
+            <div class="hero-copy">
+                <span class="eyebrow">Support Center</span>
+                <h2>One place for live AI support, crop workflow help, and practical guidance.</h2>
+                <p>
+                    The support assistant stays available across the full logged-in app. Use the floating
+                    chat panel any time, or start from the guided topics below.
+                </p>
+                <div class="hero-actions">
+                    <button class="button-primary" type="button" data-open-support-chat>Open Live Support</button>
+                    <a href="{{ redirect_url }}" class="button-secondary">Back to Dashboard</a>
+                </div>
+            </div>
+            <div class="panel">
+                <span class="status-pill">Current Session</span>
+                <h3>{{ session.get('selected_crop', 'No crop selected')|capitalize }}</h3>
+                <p>
+                    {% if session.get('selected_crop') %}
+                        The assistant can give more focused guidance for {{ session.get('selected_crop') }} right now.
+                    {% else %}
+                        Select Sugarcane or Grapes from the dashboard to unlock crop-specific assistance.
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="feature-grid">
+        <article class="feature-card">
+            <span class="eyebrow">24/7 Live</span>
+            <h3>Always available</h3>
+            <p>The support panel works on every logged-in page and keeps replying even if the AI model falls back to built-in support knowledge.</p>
+        </article>
+        <article class="feature-card">
+            <span class="eyebrow">Workflow Help</span>
+            <h3>Fix upload and camera issues</h3>
+            <p>Ask short questions like upload not working, camera permission problem, or low confidence result.</p>
+        </article>
+        <article class="feature-card">
+            <span class="eyebrow">Crop Guidance</span>
+            <h3>Get symptom support</h3>
+            <p>Ask about yellow leaf, blight, rust, irrigation stress, fertilizer basics, or prevention tips.</p>
+        </article>
+    </section>
+
+    <section class="panel">
+        <div class="panel-header">
+            <div>
+                <span class="eyebrow">Quick Start</span>
+                <h3 class="section-title">Suggested support prompts</h3>
+                <p>Tap a prompt to open the support widget with a useful question.</p>
+            </div>
+        </div>
+        <div class="suggestion-row">
+            <button type="button" class="suggestion-chip" data-support-prompt="Upload not working">Upload not working</button>
+            <button type="button" class="suggestion-chip" data-support-prompt="How do I capture a clear leaf image?">Capture clear image</button>
+            <button type="button" class="suggestion-chip" data-support-prompt="How can I prevent leaf blight in grapes?">Prevent grape blight</button>
+            <button type="button" class="suggestion-chip" data-support-prompt="What does confidence score mean?">Confidence score</button>
+        </div>
+    </section>
+</section>
+{% endblock %}
