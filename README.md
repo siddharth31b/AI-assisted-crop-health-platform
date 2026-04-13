@@ -168,28 +168,6 @@ AI-assisted crop health platform/
 - Crop selection is stored in session and used during prediction.
 - If the chatbot model is unavailable, the app automatically falls back to built-in support responses.
 
-## Screenshots
-
-### Login
-![Login](App_Images/image.png)
-
-### User dashboard
-![User Dashboard](App_Images/image-1.png)
-
-### Admin dashboard
-![Admin Dashboard](App_Images/image-2.png)
-
-### Train model page
-![Train Model 1](App_Images/image-3.png)
-![Train Model 2](App_Images/image-4.png)
-
-### Prediction result
-![Result 1](App_Images/image-5.png)
-![Result 2](App_Images/image-6.png)
-
-### Chatbot
-![Chatbot](App_Images/image-7.png)
-
 ## Future improvements
 
 - Add support for more crops and disease classes
